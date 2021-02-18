@@ -30,13 +30,13 @@ class Auth extends CI_Controller
 		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page
-			redirect('auth/login', 'refresh');
+			redirect('admin-login', 'refresh');
 		}
-		else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
-		{
-			// redirect them to the home page because they must be an administrator to view this
-			show_error('You must be an administrator to view this page.');
-		}
+		// else if (!$this->ion_auth->is_admin()) // remove this elseif if you want to enable this for non-admins
+		// {
+		// 	// redirect them to the home page because they must be an administrator to view this
+		// 	show_error('You must be an administrator to view this page.');
+		// }
 		else
 		{
 			$this->data['title'] = $this->lang->line('index_heading');
@@ -65,6 +65,46 @@ class Auth extends CI_Controller
 		}
 	}
 
+	public function dashboard()
+	{
+
+		if (!$this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('admin-login', 'refresh');
+		}
+	
+		$this->data['title'] = $this->lang->line('index_heading');
+
+		$this->data['title'] = 'Dashboard';
+		$this->data['page_title'] = 'Admin';
+		$this->data['page_subtitle'] = 'Dashboard';
+		$this->data['module'] = 'auth';
+		$this->data['page'] = 'dashboard';
+
+		$this->_render_page('admin_container', $this->data);
+	}
+	public function profile(){
+
+        $user = $this->ion_auth->user()->row();
+        $newdata = array();
+        foreach ($user as $key => $value) {
+            if($key=='activation_selector' || $key=='activation_code' || $key=='forgotten_password_selector' || $key=='forgotten_password_code' || $key=='forgotten_password_time' || $key=='remember_selector' || $key=='remember_code'|| $key=='password'|| $key=='ip_address' ){
+
+            }else{
+                $newdata[$key] = $value;
+            }
+        }
+        
+        $this->data['user'] = $newdata;
+        $this->data['pageTitle'] = 'User';
+        $this->data['pageSubTitle'] = 'profile';
+        $this->data['page'] = 'profile';
+        $this->data['module'] = 'auth';
+
+        $this->load->view('admin_container', $this->data);
+    }
+
 	/**
 	 * Log the user in
 	 */
@@ -87,14 +127,14 @@ class Auth extends CI_Controller
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
-				redirect('/', 'refresh');
+				redirect('dashboard', 'refresh');
 			}
 			else
 			{
 				// if the login was un-successful
 				// redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/login', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
+				redirect('admin-login', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
@@ -105,6 +145,7 @@ class Auth extends CI_Controller
 
 			$this->data['identity'] = [
 				'name' => 'identity',
+				'class' => 'form-control form-control-lg',
 				'id' => 'identity',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('identity'),
@@ -112,11 +153,18 @@ class Auth extends CI_Controller
 
 			$this->data['password'] = [
 				'name' => 'password',
+				'class' => 'form-control form-control-lg',
 				'id' => 'password',
 				'type' => 'password',
 			];
 
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+			$this->data['title'] = 'User Login';
+			$this->data['page_title'] = 'Login';
+			$this->data['page_subtitle'] = 'User';
+			$this->data['module'] = 'auth';
+			$this->data['page'] = 'login';
+
+			$this->_render_page('login_container', $this->data);
 		}
 	}
 
@@ -131,7 +179,7 @@ class Auth extends CI_Controller
 		$this->ion_auth->logout();
 
 		// redirect them to the login page
-		redirect('auth/login', 'refresh');
+		redirect('admin-login', 'refresh');
 	}
 
 	/**
@@ -145,7 +193,7 @@ class Auth extends CI_Controller
 
 		if (!$this->ion_auth->logged_in())
 		{
-			redirect('auth/login', 'refresh');
+			redirect('admin-login', 'refresh');
 		}
 
 		$user = $this->ion_auth->user()->row();
@@ -235,6 +283,8 @@ class Auth extends CI_Controller
 			// setup the input
 			$this->data['identity'] = [
 				'name' => 'identity',
+				'class' => 'form-control form-control-lg',
+				'placeholder' => 'Email Address', 
 				'id' => 'identity',
 			];
 

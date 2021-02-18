@@ -55,7 +55,13 @@ class Auth extends CI_Controller
 				$this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'index', $this->data);
+			$this->data['title'] = 'User List';
+			$this->data['page_title'] = 'User';
+			$this->data['page_subtitle'] = 'List';
+			$this->data['module'] = 'auth';
+			$this->data['page'] = 'index';
+
+			$this->_render_page('admin_container', $this->data);
 		}
 	}
 
@@ -176,7 +182,14 @@ class Auth extends CI_Controller
 			];
 
 			// render
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'change_password', $this->data);
+
+			$this->data['title'] = 'User Create';
+			$this->data['page_title'] = 'Create';
+			$this->data['page_subtitle'] = 'User';
+			$this->data['module'] = 'auth';
+			$this->data['page'] = 'change_password';
+
+			$this->_render_page('admin_container', $this->data);
 		}
 		else
 		{
@@ -564,7 +577,14 @@ class Auth extends CI_Controller
 				'value' => $this->form_validation->set_value('password_confirm'),
 			];
 
-			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'create_user', $this->data);
+			$this->data['title'] = 'User Create';
+			$this->data['page_title'] = 'Create';
+			$this->data['page_subtitle'] = 'User';
+			$this->data['module'] = 'auth';
+			$this->data['page'] = 'create_user';
+
+			$this->_render_page('admin_container', $this->data);
+
 		}
 	}
 	/**
@@ -717,7 +737,14 @@ class Auth extends CI_Controller
 			'type' => 'password'
 		];
 
-		$this->_render_page('auth/edit_user', $this->data);
+		$this->data['title'] = 'User Edit';
+		$this->data['page_title'] = 'Edit';
+		$this->data['page_subtitle'] = 'User';
+		$this->data['module'] = 'auth';
+		$this->data['page'] = 'edit_user';
+
+		$this->_render_page('admin_container', $this->data);
+
 	}
 
 	/**
@@ -768,8 +795,13 @@ class Auth extends CI_Controller
 			'value' => $this->form_validation->set_value('description'),
 		];
 
-		$this->_render_page('auth/create_group', $this->data);
-		
+		$this->data['title'] = 'Group Create';
+		$this->data['page_title'] = 'Create';
+		$this->data['page_subtitle'] = 'Group';
+		$this->data['module'] = 'auth';
+		$this->data['page'] = 'create_group';
+
+		$this->_render_page('admin_container', $this->data);
 	}
 
 	/**
@@ -840,8 +872,32 @@ class Auth extends CI_Controller
 			'value' => $this->form_validation->set_value('group_description', $group->description),
 		];
 
-		$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'edit_group', $this->data);
+		$this->data['title'] = 'Group Edit';
+		$this->data['page_title'] = 'Edit';
+		$this->data['page_subtitle'] = 'Group';
+		$this->data['module'] = 'auth';
+		$this->data['page'] = 'edit_group';
+
+		$this->_render_page('admin_container', $this->data);
 	}
+
+	/**
+     * Show available group
+     */
+    public function show_group()
+    {
+
+        $this->data['groups'] = $this->ion_auth->groups()->result();
+
+        $this->data['title'] = 'Group';
+        $this->data['page_title'] = 'Group';
+        $this->data['page_subtitle'] = 'Show Group';
+        $this->data['page'] = 'show_group';
+        $this->data['module'] = 'auth';
+
+        $this->_render_page('admin_container', $this->data);
+
+    }
 
 	/**
 	 * @return array A CSRF key-value pair

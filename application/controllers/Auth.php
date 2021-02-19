@@ -70,13 +70,53 @@ class Auth extends CI_Controller
 
 	public function dashboard()
 	{
+		$uid = $this->uid;
 
 		if (!$this->ion_auth->logged_in())
 		{
 			// redirect them to the login page
 			redirect('admin-login', 'refresh');
 		}
-	
+		$this->load->model('income_model');
+		$this->load->model('expenses_model');
+
+        $expenses = $this->expenses_model->get_final_expenses($uid);
+        $income = $this->income_model->get_final_income($uid);
+
+        $previous = date('Y-m-d', strtotime('-1 year'));
+        $today = date("Y-m-d");
+        $query = array('Date(date) >=' => $previous, 'Date(date) <=' => $today, 'added_by'=> $uid);
+
+        $y_expenses = $this->expenses_model->dashboard_expenses($query);
+        $y_income = $this->income_model->dashboard_income($query);
+
+        $wdate = ie_week_first_end_day();
+        $w_query = array('Date(date) >=' => $wdate['start'], 'Date(date) <=' => $wdate['end'], 'added_by'=> $uid);
+        $w_expenses = $this->expenses_model->dashboard_expenses($w_query);
+        $w_income = $this->income_model->dashboard_income($w_query);
+
+        $lwdate = ie_last_week_date();
+        $lw_query = array('Date(date) >=' => $lwdate['start'], 'Date(date) <=' => $lwdate['end'], 'added_by'=> $uid);
+        $lw_expenses = $this->expenses_model->dashboard_expenses($lw_query);
+        $lw_income = $this->income_model->dashboard_income($lw_query);
+
+        $m_date = ie_month_date();
+        $m_query = array('Date(date) >=' => $m_date['start'], 'Date(date) <=' => $m_date['end'], 'added_by'=> $uid);
+        $m_expenses = $this->expenses_model->dashboard_expenses($m_query);
+        $m_income = $this->income_model->dashboard_income($m_query);
+
+        $this->data['y_expenses'] = $y_expenses;
+		$this->data['y_income'] = $y_income;
+		$this->data['w_expenses'] = $w_expenses;
+		$this->data['w_income'] = $w_income;
+		$this->data['lw_expenses'] = $lw_expenses;
+		$this->data['lw_income'] = $lw_income;
+		$this->data['m_expenses'] = $m_expenses;
+		$this->data['m_income'] = $m_income;
+
+
+		$this->data['expenses'] = $expenses;
+		$this->data['income'] = $income;
 		$this->data['title'] = $this->lang->line('index_heading');
 
 		$this->data['title'] = 'Dashboard';
@@ -85,7 +125,6 @@ class Auth extends CI_Controller
 		$this->data['module'] = 'auth';
 		$this->data['page'] = 'dashboard';
 
-		$uid = $this->uid;
     	$container = ie_get_container($uid);
 		$this->_render_page($container, $this->data);
 	}
@@ -116,6 +155,11 @@ class Auth extends CI_Controller
 	 */
 	public function login()
 	{
+		if ($this->ion_auth->logged_in())
+		{
+			// redirect them to the login page
+			redirect('dashboard', 'refresh');
+		}
 		$this->data['title'] = $this->lang->line('login_heading');
 
 		// validate form input

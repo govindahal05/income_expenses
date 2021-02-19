@@ -50,15 +50,9 @@ class Expenses extends CI_Controller {
     {
         $uid = $this->uid;
         $container = ie_get_container($uid);
+        $exp = $this->expenses_model->get_expenses(array('added_by'=>$uid));
+        $expenses = $this->expenses_model->get_final_expenses($exp);
 
-        $expenses = $this->expenses_model->get_expenses(array('added_by'=>$uid));
-        $e_category = $this->e_category_model->get_category(NULL, array('id','name'));
-        $e_categories = ie_convert_array_to_key_value($e_category, 'name');
-        $data = array();
-
-        foreach ($expenses as $key => $value) {
-            $expenses[$key]->category_name = $e_categories[$value->category_id];
-        }
         $data['expenses'] = $expenses;
 
         $data['title'] = 'Expenses';

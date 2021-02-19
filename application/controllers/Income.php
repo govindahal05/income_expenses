@@ -51,15 +51,8 @@ class Income extends CI_Controller {
         $uid = $this->uid;
         $container = ie_get_container($uid);
 
-        $income = $this->income_model->get_income(array('added_by'=>$uid));
-        $e_category = $this->i_category_model->get_category(NULL, array('id','name'));
-        $e_categories = ie_convert_array_to_key_value($e_category, 'name');
-        $data = array();
-
-        foreach ($income as $key => $value) {
-            $income[$key]->category_name = $e_categories[$value->category_id];
-        }
-        $data['income'] = $income;
+        $incomes = $this->income_model->get_income(array('added_by'=>$uid));      
+        $data['income'] = $this->income_model->get_final_income($incomes);      
 
         $data['title'] = 'Income';
         $data['page_title'] = 'Income';

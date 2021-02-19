@@ -8,6 +8,7 @@ class Income_model extends CI_Model {
 	public function __construct()
 	{
 		parent::__construct();
+        $this->load->model('i_category_model');
 		
 	}
 
@@ -49,6 +50,27 @@ class Income_model extends CI_Model {
     public function delete($where = NULL)
     {
         return $this->db->delete($this->table, $where);
+    }
+    public function dashboard_income($where)
+    {
+        $inc = $this->get_income($where);
+        $incomes = $this->get_final_income($inc);
+        return $incomes;
+    }
+
+    public function get_final_income($income)
+    {
+        $i_category = $this->i_category_model->get_category(NULL, array('id','name'));
+        $i_categories = ie_convert_array_to_key_value($i_category, 'name');
+        $data = array();
+        if(is_array($income) || is_object($income))
+        {
+            foreach ($income as $key => $value) {
+                $income[$key]->category_name = $i_categories[$value->category_id];
+            }
+        }
+        $data['income'] = $income;
+        return $income;
     }
 }
 

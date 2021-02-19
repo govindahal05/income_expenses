@@ -5,7 +5,7 @@
                         <span class="db"><img src="<?php echo base_url() ?>assets/images/logo-ie.png" alt="logo" width="100px"/></span>
                     </div>
                     <!-- Form -->
-                    <div id="infoMessage"><?php echo $message;?></div>
+                    <div style="color:#fff" id="infoMessage"><?php echo $message;?></div>
 
                     <?php echo form_open("auth/login",array('class' => "form-horizontal m-t-20"));?>
                     <form class="form-horizontal m-t-20" id="loginform" action="index.html">
@@ -24,7 +24,7 @@
                                     <?php echo form_input($password);?>
                                 </div>
                             </div>
-
+                            <a style="color:#fff;" href="<?php echo base_url('register') ?>">No account ? <span     >Create</span></a>
                         </div>
                         <div class="row border-top border-secondary">
                             <div class="col-12">

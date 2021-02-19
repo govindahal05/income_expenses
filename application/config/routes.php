@@ -59,7 +59,7 @@ $route['dashboard'] ='auth/dashboard';
 $route['profile'] ='auth/profile';
 
 $route['list-users'] ='auth/index';
-$route['create-user'] ='auth/create_user';
+$route['register'] ='auth/create_user';
 $route['edit-user/(:num)'] ='auth/edit_user/$1';
 
 $route['create-group'] ='auth/create_group';

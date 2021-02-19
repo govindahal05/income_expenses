@@ -591,10 +591,10 @@ class Auth extends CI_Controller
 	{
 		$this->data['title'] = $this->lang->line('create_user_heading');
 
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
-		{
-			redirect('auth', 'refresh');
-		}
+		// if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		// {
+		// 	redirect('auth', 'refresh');
+		// }
 
 		$tables = $this->config->item('tables', 'ion_auth');
 		$identity_column = $this->config->item('identity', 'ion_auth');
@@ -635,7 +635,7 @@ class Auth extends CI_Controller
 			// check to see if we are creating the user
 			// redirect them back to the admin page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			redirect("admin-login", 'refresh');
 		}
 		else
 		{
@@ -646,48 +646,64 @@ class Auth extends CI_Controller
 			$this->data['first_name'] = [
 				'name' => 'first_name',
 				'id' => 'first_name',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'First Name',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('first_name'),
 			];
 			$this->data['last_name'] = [
 				'name' => 'last_name',
 				'id' => 'last_name',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Last Name',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('last_name'),
 			];
 			$this->data['identity'] = [
 				'name' => 'identity',
 				'id' => 'identity',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('identity'),
 			];
 			$this->data['email'] = [
 				'name' => 'email',
 				'id' => 'email',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Email',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('email'),
 			];
 			$this->data['company'] = [
 				'name' => 'company',
 				'id' => 'company',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Company',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('company'),
 			];
 			$this->data['phone'] = [
 				'name' => 'phone',
 				'id' => 'phone',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Phone',
 				'type' => 'text',
 				'value' => $this->form_validation->set_value('phone'),
 			];
 			$this->data['password'] = [
 				'name' => 'password',
 				'id' => 'password',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Password',
 				'type' => 'password',
 				'value' => $this->form_validation->set_value('password'),
 			];
 			$this->data['password_confirm'] = [
 				'name' => 'password_confirm',
 				'id' => 'password_confirm',
+				'class' => 'form-control form-control-lg',
+				'placeholder' =>'Password confirmation',
 				'type' => 'password',
 				'value' => $this->form_validation->set_value('password_confirm'),
 			];
@@ -695,11 +711,17 @@ class Auth extends CI_Controller
 			$this->data['title'] = 'User Create';
 			$this->data['page_title'] = 'Create';
 			$this->data['page_subtitle'] = 'User';
-			$this->data['module'] = 'auth';
-			$this->data['page'] = 'create_user';
 
 			$uid = $this->uid;
 	    	$container = ie_get_container($uid);
+	    	if($container == 'default_container'){
+				$this->data['module'] = 'login';
+				$this->data['page'] = 'register';
+	    	}else{
+				$this->data['module'] = 'auth';
+				$this->data['page'] = 'create_user';
+
+	    	}
 			$this->_render_page($container, $this->data);
 
 		}

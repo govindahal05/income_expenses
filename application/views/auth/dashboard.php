@@ -12,7 +12,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Income</h5>
+                <h5 class="card-title">Income <?php echo $w_income['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -26,7 +26,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($w_income as $inc):
+                            foreach ($w_income['income'] as $inc):
                                 $i++;
                             ?>
                             <tr>
@@ -56,7 +56,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Expenses</h5>
+                <h5 class="card-title">Expenses <?php echo $w_expenses['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -70,7 +70,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($w_expenses as $exp):
+                            foreach ($w_expenses['expenses'] as $exp):
                                 $i++;
                             ?>
                             <tr>
@@ -109,7 +109,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Income</h5>
+                <h5 class="card-title">Income <?php echo $lw_income['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -123,7 +123,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($lw_income as $inc):
+                            foreach ($lw_income['income'] as $inc):
                                 $i++;
                             ?>
                             <tr>
@@ -153,7 +153,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Expenses</h5>
+                <h5 class="card-title">Expenses <?php echo $lw_expenses['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -167,7 +167,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($lw_expenses as $exp):
+                            foreach ($lw_expenses['expenses'] as $exp):
                                 $i++;
                             ?>
                             <tr>
@@ -206,7 +206,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Income</h5>
+                <h5 class="card-title">Income <?php echo $m_income['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -220,7 +220,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($m_income as $inc):
+                            foreach ($m_income['income'] as $inc):
                                 $i++;
                             ?>
                             <tr>
@@ -250,7 +250,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Expenses</h5>
+                <h5 class="card-title">Expenses <?php echo $m_expenses['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -264,7 +264,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($m_expenses as $exp):
+                            foreach ($m_expenses['expenses'] as $exp):
                                 $i++;
                             ?>
                             <tr>
@@ -303,7 +303,7 @@
     <div class="col-6">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Income</h5>
+                <h5 class="card-title">Income <?php echo $y_income['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -317,7 +317,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($y_income as $inc):
+                            foreach ($y_income['income'] as $inc):
                                 $i++;
                             ?>
                             <tr>
@@ -347,7 +347,7 @@
         
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Expenses</h5>
+                <h5 class="card-title">Expenses <?php echo $y_expenses['total'] ?></h5>
                 <div class="table-responsive">
                     <table id="zero_config" class="table table-striped table-bordered">
                         <thead>
@@ -361,7 +361,7 @@
                         <tbody>
                             <?php 
                             $i = 0;
-                            foreach ($y_expenses as $exp):
+                            foreach ($y_expenses['expenses'] as $exp):
                                 $i++;
                             ?>
                             <tr>

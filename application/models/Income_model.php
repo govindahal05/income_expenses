@@ -63,14 +63,17 @@ class Income_model extends CI_Model {
         $i_category = $this->i_category_model->get_category(NULL, array('id','name'));
         $i_categories = ie_convert_array_to_key_value($i_category, 'name');
         $data = array();
+        $subtotal = 0;
         if(is_array($income) || is_object($income))
         {
             foreach ($income as $key => $value) {
                 $income[$key]->category_name = $i_categories[$value->category_id];
+                $subtotal = $subtotal + $value->amount;
             }
         }
+        $data['total'] = $subtotal;
         $data['income'] = $income;
-        return $income;
+        return $data;
     }
 }
 

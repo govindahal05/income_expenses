@@ -64,13 +64,17 @@ class Expenses_model extends CI_Model {
         $e_category = $this->e_category_model->get_category(NULL, array('id','name'));
         $e_categories = ie_convert_array_to_key_value($e_category, 'name');
         $data = array();
+        $subtotal = 0;
         if(is_array($expenses) || is_object($expenses))
         {
             foreach ($expenses as $key => $value) {
                 $expenses[$key]->category_name = $e_categories[$value->category_id];
+                $subtotal = $subtotal + $value->amount;
             }
         }
-        return $expenses;
+        $data['total'] = $subtotal;
+        $data['expenses'] = $expenses;
+        return $data;
     }
 }
 

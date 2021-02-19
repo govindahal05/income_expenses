@@ -8,6 +8,7 @@ class Expenses extends CI_Controller {
         $this->load->model('expenses_model');
         $this->load->model('e_category_model');
         $this->uid = $this->session->userdata('user_id');
+        $this->gid = $this->session->userdata('group');
 
         if (!$this->ion_auth->logged_in())
         {
@@ -15,10 +16,16 @@ class Expenses extends CI_Controller {
             redirect('admin-login', 'refresh');
         }
 
+
     }
     public function index()
     {
+        $gid = $this->gid;
+        if(!in_array(1, $gid)){
+            redirect('dashboard', 'refresh');
+        }
         $uid = $this->uid;
+        $container = ie_get_container($uid);
 
         $expenses = $this->expenses_model->get_expenses();
         $e_category = $this->e_category_model->get_category(NULL, array('id','name'));
@@ -36,7 +43,29 @@ class Expenses extends CI_Controller {
         $data['page'] = 'index';
         $data['module'] = 'expenses';
 
+        $this->load->view($container, $data);
+
+    }
+    public function user()
+    {
+        $uid = $this->uid;
         $container = ie_get_container($uid);
+
+        $expenses = $this->expenses_model->get_expenses(array('added_by'=>$uid));
+        $e_category = $this->e_category_model->get_category(NULL, array('id','name'));
+        $e_categories = ie_convert_array_to_key_value($e_category, 'name');
+        $data = array();
+
+        foreach ($expenses as $key => $value) {
+            $expenses[$key]->category_name = $e_categories[$value->category_id];
+        }
+        $data['expenses'] = $expenses;
+
+        $data['title'] = 'Expenses';
+        $data['page_title'] = 'Expenses';
+        $data['page_subtitle'] = 'Show Expenses';
+        $data['page'] = 'index';
+        $data['module'] = 'expenses';
 
         $this->load->view($container, $data);
 

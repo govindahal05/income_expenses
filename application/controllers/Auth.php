@@ -17,6 +17,7 @@ class Auth extends CI_Controller
 		$this->load->helper(['url', 'language']);
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
+        $this->uid = $this->session->userdata('user_id');
 
 		$this->lang->load('auth');
 	}
@@ -60,8 +61,10 @@ class Auth extends CI_Controller
 			$this->data['page_subtitle'] = 'List';
 			$this->data['module'] = 'auth';
 			$this->data['page'] = 'index';
-
-			$this->_render_page('admin_container', $this->data);
+			
+			$uid = $this->uid;
+        	$container = ie_get_container($uid);
+			$this->_render_page($container, $this->data);
 		}
 	}
 
@@ -82,7 +85,9 @@ class Auth extends CI_Controller
 		$this->data['module'] = 'auth';
 		$this->data['page'] = 'dashboard';
 
-		$this->_render_page('admin_container', $this->data);
+		$uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
 	}
 	public function profile(){
 
@@ -95,14 +100,15 @@ class Auth extends CI_Controller
                 $newdata[$key] = $value;
             }
         }
-        
         $this->data['user'] = $newdata;
-        $this->data['pageTitle'] = 'User';
-        $this->data['pageSubTitle'] = 'profile';
-        $this->data['page'] = 'profile';
-        $this->data['module'] = 'auth';
-
-        $this->load->view('admin_container', $this->data);
+        $this->data['title'] = 'User profile';
+		$this->data['page_title'] = 'profile';
+		$this->data['page_subtitle'] = 'User';
+		$this->data['module'] = 'auth';
+		$this->data['page'] = 'profile';
+		$uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
     }
 
 	/**
@@ -124,6 +130,13 @@ class Auth extends CI_Controller
 
 			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
 			{
+        		$uid = $this->session->userdata('user_id');
+				$cgroups = $this->ion_auth->get_users_groups($uid)->result_array();
+				$cgroup = array();
+				foreach ($cgroups as $key => $value) {
+					$cgroup[] = $value['id'];
+				}
+				$this->session->set_userdata('group',$cgroup);
 				//if the login is successful
 				//redirect them back to the home page
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -236,8 +249,9 @@ class Auth extends CI_Controller
 			$this->data['page_subtitle'] = 'User';
 			$this->data['module'] = 'auth';
 			$this->data['page'] = 'change_password';
-
-			$this->_render_page('admin_container', $this->data);
+			$uid = $this->uid;
+	    	$container = ie_get_container($uid);
+			$this->_render_page($container, $this->data);
 		}
 		else
 		{
@@ -391,8 +405,15 @@ class Auth extends CI_Controller
 				$this->data['csrf'] = $this->_get_csrf_nonce();
 				$this->data['code'] = $code;
 
-				// render
-				$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'reset_password', $this->data);
+				$this->data['title'] = 'Password reset';
+				$this->data['page_title'] = 'reset';
+				$this->data['page_subtitle'] = 'Password';
+				$this->data['module'] = 'auth';
+				$this->data['page'] = 'reset_password';
+
+				$uid = $this->uid;
+		    	$container = ie_get_container($uid);
+				$this->_render_page($container, $this->data);
 			}
 			else
 			{
@@ -633,7 +654,9 @@ class Auth extends CI_Controller
 			$this->data['module'] = 'auth';
 			$this->data['page'] = 'create_user';
 
-			$this->_render_page('admin_container', $this->data);
+			$uid = $this->uid;
+	    	$container = ie_get_container($uid);
+			$this->_render_page($container, $this->data);
 
 		}
 	}
@@ -793,8 +816,9 @@ class Auth extends CI_Controller
 		$this->data['module'] = 'auth';
 		$this->data['page'] = 'edit_user';
 
-		$this->_render_page('admin_container', $this->data);
-
+		$uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
 	}
 
 	/**
@@ -851,7 +875,9 @@ class Auth extends CI_Controller
 		$this->data['module'] = 'auth';
 		$this->data['page'] = 'create_group';
 
-		$this->_render_page('admin_container', $this->data);
+		$uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
 	}
 
 	/**
@@ -928,7 +954,9 @@ class Auth extends CI_Controller
 		$this->data['module'] = 'auth';
 		$this->data['page'] = 'edit_group';
 
-		$this->_render_page('admin_container', $this->data);
+		$uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
 	}
 
 	/**
@@ -945,7 +973,9 @@ class Auth extends CI_Controller
         $this->data['page'] = 'show_group';
         $this->data['module'] = 'auth';
 
-        $this->_render_page('admin_container', $this->data);
+        $uid = $this->uid;
+    	$container = ie_get_container($uid);
+		$this->_render_page($container, $this->data);
 
     }
 

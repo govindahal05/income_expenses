@@ -71,4 +71,7 @@ $route['my-expenses'] ='expenses/user';
 $route['add-expenses'] ='expenses/add';
 $route['edit-expenses/(:num)'] ='expenses/edit/$1';
 
-// $route['auth/role-delete/(:any)'] ='admin/role/delete/$1';
+
+$route['all-income'] ='income/index';
+$route['my-income'] ='income/user';
+$route['add-income'] ='income/add';
